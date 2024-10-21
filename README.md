@@ -127,6 +127,14 @@ Then run the tests in a new terminal session
 ; JWT_SECRET=f6d278bb34e1d0e146a80b16ec254c05 npm run test
 ```
 
+## Mongo Playground
+
+If you're not sure how to query your database and you need to test out a few approaches, we recommend you use [Mongo Playground](https://mongoplayground.net/).
+
+- Use the left pane to create a mock-up of your collection
+- Use the middle pane to try out a new query
+- See the results in the right pane
+
 ## MongoDB Connection Errors?
 
 Some people occasionally experience MongoDB connection errors when running the tests or trying to use the application. Here are some tips which might help resolve such issues.
