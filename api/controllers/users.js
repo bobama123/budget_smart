@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const TokenGenerator = require("../lib/token_generator");
 
 const UsersController = {
   Create: (req, res) => {
@@ -7,7 +8,9 @@ const UsersController = {
       if (err) {
         res.status(400).json({message: 'Bad request'})
       } else {
-        res.status(201).json({ message: 'OK' });
+        // Generate token after user creation
+        const token = TokenGenerator.jsonwebtoken(req.user_id); // Pass user ID for the token
+        res.status(201).json({ message: 'OK', token: token });
       }
     });
   },

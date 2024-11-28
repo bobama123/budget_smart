@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require("dotenv").config();
+
 if (!process.env.JWT_SECRET) {
   console.error("\nThe JWT_SECRET environment variable wasn't set before running the server. Did you forget it?\n\n",
               "Make sure you run the server like documented here: https://github.com/makersacademy/acebook-mern-template#start \n\n");
@@ -26,7 +28,7 @@ app.set("port", port);
  * Connect to MongoDB
  **/
 
-var mongoDbUrl = process.env.MONGODB_URL || "mongodb://0.0.0.0/acebook";
+const mongoDbUrl = process.env.MONGODB_URL;
 mongoose.connect(mongoDbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -34,6 +36,9 @@ mongoose.connect(mongoDbUrl, {
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.once("open", function () {
+  console.log("Connected to MongoDB Atlas!");
+});
 
 /**
  * Create HTTP server.
