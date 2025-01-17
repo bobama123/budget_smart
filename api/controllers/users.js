@@ -9,7 +9,7 @@ const UsersController = {
         res.status(400).json({message: 'Bad request'})
       } else {
         // Generate token after user creation
-        const token = TokenGenerator.jsonwebtoken(req.user_id); // Pass user ID for the token
+        const token = TokenGenerator.jsonwebtoken(user._id); // Pass user ID for the token
         res.status(201).json({ message: 'OK', token: token });
       }
     });
