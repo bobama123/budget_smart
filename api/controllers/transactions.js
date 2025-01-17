@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const getUserTransactions = async (req, res) => {
   try {
     console.log("User ID in controller:", req.user_id); 
-    console.log('User ID:', req.user_id);
     // Find transactions where the user ID matches the logged-in user's ID
     const transactions = await Transaction.find({ user: req.user_id }).sort({ createdAt: -1 });
     
@@ -22,7 +21,6 @@ const getUserTransactions = async (req, res) => {
 
 
 
-
 const createTransaction = async (req, res) => {
   try {
     const userId = mongoose.Types.ObjectId(req.body.user);
@@ -35,8 +33,6 @@ const createTransaction = async (req, res) => {
     // Save the transaction to the database
     await transaction.save();
 
-    // Generate a new token for the user
-    // const token = TokenGenerator.jsonwebtoken(req.user_id);
 
     // Respond with a success message and the new token
     res.status(201).json({ message: "Transaction created successfully"});

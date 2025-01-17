@@ -37,8 +37,6 @@ const tokenChecker = (req, res, next) => {
 
   JWT.verify(token, process.env.JWT_SECRET, (err, payload) => {
     if(err) {
-      // console.log(err)
-      // res.status(401).json({message: "auth error"});
       console.log("Token verification failed:", err);
       return res.status(401).json({ message: "Invalid or expired token" });
 
@@ -54,7 +52,6 @@ const tokenChecker = (req, res, next) => {
 app.use("/posts", tokenChecker, postsRouter);
 app.use("/tokens", authenticationRouter);
 app.use("/users", usersRouter);
-// app.use("/transactions", transactionsRouter);
 app.use("/transactions", tokenChecker, transactionsRouter);
 
 
