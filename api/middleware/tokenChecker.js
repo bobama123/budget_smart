@@ -29,4 +29,4 @@ const tokenChecker = (req, res, next) => {
         next();
       }
     });
-  };
+};
