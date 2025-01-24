@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Post from '../post/Post'
+import TransactionForm from '../transaction/Transaction';
 
 const Feed = ({ navigate }) => {
-  const [posts, setPosts] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [token, setToken] = useState(window.localStorage.getItem("token"));
 
   useEffect(() => {
     if(token) {
-      fetch("/posts", {
+      fetch("/transactions", {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -16,10 +16,10 @@ const Feed = ({ navigate }) => {
         .then(async data => {
           window.localStorage.setItem("token", data.token)
           setToken(window.localStorage.getItem("token"))
-          setPosts(data.posts);
+          setTransactions(data.transactions);
         })
     }
-  }, [])
+  }, [token])
     
 
   const logout = () => {
@@ -30,13 +30,13 @@ const Feed = ({ navigate }) => {
     if(token) {
       return(
         <>
-          <h2>Posts</h2>
+          <h2>Transactions</h2>
             <button onClick={logout}>
               Logout
             </button>
           <div id='feed' role="feed">
-              {posts.map(
-                (post) => ( <Post post={ post } key={ post._id } /> )
+              {transactions.map(
+                (transaction) => ( <TransactionForm transaction={ transaction } key={ transaction._id } /> )
               )}
           </div>
         </>
@@ -47,3 +47,22 @@ const Feed = ({ navigate }) => {
 }
 
 export default Feed;
+
+
+// import React from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import TransactionForm from '../transaction/Transaction';
+
+
+// const Feed = () => {
+//   const navigate = useNavigate();
+
+//   return (
+//     <div>
+//       <h1>Welcome to Budget Smartly</h1>
+//       <TransactionForm navigate={navigate} />
+//     </div>
+//   );
+// };
+
+// export default Feed;
