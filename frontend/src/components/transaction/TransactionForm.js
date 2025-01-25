@@ -11,10 +11,13 @@ const TransactionForm = ({ navigate }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const token = window.localStorage.getItem("token");
+    
     fetch( '/transactions', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Send token in Authorization header
       },
       body: JSON.stringify({ amount: amount, date: date, category: category, description: description })
     })
