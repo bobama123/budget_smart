@@ -25,8 +25,10 @@ const TransactionForm = ({ navigate }) => {
           navigate('/transaction')  // redirect back to form upon failure
         }
       })
+      .catch(error => {
+        console.error("Error during transaction creation:", error);
+      });
   }
-
   const handleAmountChange = (event) => {
     setAmount(event.target.value)
   }
