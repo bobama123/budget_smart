@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import TransactionForm from '../transaction/Transaction';
+import TransactionForm from '../transaction/TransactionForm';
+import Transaction from '../transaction/Transaction';
 
 const Feed = ({ navigate }) => {
   const [transactions, setTransactions] = useState([]);
@@ -18,6 +19,8 @@ const Feed = ({ navigate }) => {
           setToken(window.localStorage.getItem("token"))
           setTransactions(data.transactions);
         })
+        console.log("Transactions in state:", transactions);
+
     }
   }, [token])
     
@@ -26,6 +29,11 @@ const Feed = ({ navigate }) => {
     window.localStorage.removeItem("token")
     navigate('/login')
   }
+
+  const handleNewTransaction = (newTransaction) => {
+    // Update transactions list when a new transaction is added
+    setTransactions([newTransaction, ...transactions]);
+  };
   
     if(token) {
       return(
@@ -34,9 +42,10 @@ const Feed = ({ navigate }) => {
             <button onClick={logout}>
               Logout
             </button>
+            <TransactionForm navigate={navigate} onNewTransaction={handleNewTransaction} />
           <div id='feed' role="feed">
               {transactions.map(
-                (transaction) => ( <TransactionForm transaction={ transaction } key={ transaction._id } /> )
+                (transaction) => ( <Transaction transaction={ transaction } key={ transaction._id } /> )
               )}
           </div>
         </>

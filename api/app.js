@@ -4,7 +4,7 @@ const path = require("path");
 const logger = require("morgan");
 const tokenChecker = require("./middleware/tokenChecker");
 
-const postsRouter = require("./routes/posts");
+// const postsRouter = require("./routes/posts");
 const authenticationRouter = require("./routes/authentication");
 const usersRouter = require("./routes/users");
 const transactionsRouter = require("./routes/transactions");
@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 // route setup
-app.use("/posts", tokenChecker, postsRouter);
+// app.use("/posts", tokenChecker, postsRouter);
 app.use("/tokens", authenticationRouter);
 app.use("/users", usersRouter);
 app.use("/transactions", tokenChecker, transactionsRouter);
