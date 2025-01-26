@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const TransactionForm = ({ navigate }) => {
+const TransactionForm = ({ navigate, onNewTransaction }) => {
 
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
@@ -12,8 +12,8 @@ const TransactionForm = ({ navigate }) => {
     event.preventDefault();
 
     const token = window.localStorage.getItem("token");
-    
-    fetch( '/transactions', {
+
+    fetch('/transactions', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -21,16 +21,36 @@ const TransactionForm = ({ navigate }) => {
       },
       body: JSON.stringify({ amount: amount, date: date, category: category, description: description })
     })
-      .then(response => {
-        if(response.status === 201) {
-          navigate('/feedpage')   // redirect to feedpage upon success
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === "Transaction created successfully") {
+          // Call onNewTransaction with the new transaction data
+          const newTransaction = {
+            amount,
+            date,
+            category,
+            description,
+            _id: data.transactionId, // Assuming the backend sends the new transaction ID
+          };
+          onNewTransaction(newTransaction);
+          navigate('/feedpage'); // Redirect to feedpage upon success
         } else {
-          navigate('/transaction')  // redirect back to form upon failure
+          navigate('/transaction'); // Redirect back to form upon failure
         }
       })
       .catch(error => {
         console.error("Error during transaction creation:", error);
       });
+    // .then(response => {
+    //   if(response.status === 201) {
+    //     navigate('/feedpage')   // redirect to feedpage upon success
+    //   } else {
+    //     navigate('/transaction')  // redirect back to form upon failure
+    //   }
+    // })
+    // .catch(error => {
+    //   console.error("Error during transaction creation:", error);
+    // });
   }
   const handleAmountChange = (event) => {
     setAmount(event.target.value)
@@ -49,15 +69,17 @@ const TransactionForm = ({ navigate }) => {
   }
 
 
-    return (
-      <form onSubmit={handleSubmit}>
-          <input placeholder="Amount" id="amount" type='number' value={ amount } onChange={handleAmountChange} />
-          <input placeholder="Date" id="date" type='date' value={ date } onChange={handleDateChange} />
-          <input placeholder="Category" id="category" type='text' value={ category } onChange={handleCategoryChange} />
-          <input placeholder="Description" id="description" type='text' value={ description } onChange={handleDescriptionChange} />
-        <input id='submit' type="submit" value="Submit" />
-      </form>
-    );
+  return (
+    <form onSubmit={handleSubmit}>
+      <input placeholder="Amount" id="amount" type='number' value={amount} onChange={handleAmountChange} />
+      <input placeholder="Date" id="date" type='date' value={date} onChange={handleDateChange} />
+      <input placeholder="Category" id="category" type='text' value={category} onChange={handleCategoryChange} />
+      <input placeholder="Description" id="description" type='text' value={description} onChange={handleDescriptionChange} />
+      <input id='submit' type="submit" value="Submit" />
+    </form>
+  );
 }
 
 export default TransactionForm;
+
+
