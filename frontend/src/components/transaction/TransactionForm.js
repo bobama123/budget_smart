@@ -33,7 +33,7 @@ const TransactionForm = ({ navigate, onNewTransaction }) => {
             _id: data.transactionId, // Assuming the backend sends the new transaction ID
           };
           onNewTransaction(newTransaction);
-          navigate('/feedpage'); // Redirect to feedpage upon success
+          navigate('/posts'); // Redirect to feedpage upon success
         } else {
           navigate('/transaction'); // Redirect back to form upon failure
         }
