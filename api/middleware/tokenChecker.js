@@ -10,7 +10,7 @@ const tokenChecker = (req, res, next) => {
   
     if(authHeader) {
       token = authHeader.slice(7)
-      console.log(token)
+      console.log("Token:", token);
     }
   
     if (!token) {
