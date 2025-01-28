@@ -17,6 +17,7 @@ const Feed = ({ navigate }) => {
         .then(async data => {
           window.localStorage.setItem("token", data.token)
           setToken(window.localStorage.getItem("token"))
+          console.log("Fetched transactions:", data.transactions);
           setTransactions(data.transactions);
         })
         console.log("Transactions in state:", transactions);

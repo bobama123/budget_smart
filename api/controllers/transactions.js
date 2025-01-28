@@ -7,6 +7,8 @@ const getUserTransactions = async (req, res) => {
     console.log("User ID in controller:", req.user_id); 
     // Find transactions where the user ID matches the logged-in user's ID
     const transactions = await Transaction.find({ user: req.user_id }).sort({ createdAt: -1 });
+
+    console.log("Fetched transactions:", transactions); // Log the fetched transactions
     
     // Generate a new token for the user
     const token = TokenGenerator.jsonwebtoken(req.user_id);
@@ -23,7 +25,8 @@ const getUserTransactions = async (req, res) => {
 
 const createTransaction = async (req, res) => {
   try {
-    const userId = mongoose.Types.ObjectId(req.body.user);
+    const userId = mongoose.Types.ObjectId(req.user_id);
+    console.log("User ID in createTransaction:", userId); // Log user ID from the request body
     // Create a new Transaction object with the data from the request body
     const transaction = new Transaction({
       ...req.body, // Spread the data from the request body
