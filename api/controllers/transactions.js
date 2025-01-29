@@ -46,10 +46,29 @@ const createTransaction = async (req, res) => {
 };
 
 
+const deleteTransaction = async (req, res) => {
+  try {
+    const { transactionId } = req.params;
+    const userId = req.user.user_id; // Extract user ID from the authenticated request
+
+    // Find the transaction and ensure it belongs to the logged-in user
+    const transaction = await Transaction.findOneAndDelete({ _id: transactionId, user: userId });
+
+    if (!transaction) {
+      return res.status(404).json({ message: 'Transaction not found or not authorized' });
+    }
+
+    res.status(200).json({ message: 'Transaction deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 const TransactionsController = {
   getUserTransactions: getUserTransactions,
-  createTransaction: createTransaction
+  createTransaction: createTransaction,
+  deleteTransaction: deleteTransaction
 }
 
 module.exports = TransactionsController;
