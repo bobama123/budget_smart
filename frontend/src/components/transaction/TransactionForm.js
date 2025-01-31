@@ -41,17 +41,8 @@ const TransactionForm = ({ navigate, onNewTransaction }) => {
       .catch(error => {
         console.error("Error during transaction creation:", error);
       });
-    // .then(response => {
-    //   if(response.status === 201) {
-    //     navigate('/feedpage')   // redirect to feedpage upon success
-    //   } else {
-    //     navigate('/transaction')  // redirect back to form upon failure
-    //   }
-    // })
-    // .catch(error => {
-    //   console.error("Error during transaction creation:", error);
-    // });
   }
+  
   const handleAmountChange = (event) => {
     setAmount(event.target.value)
   }
