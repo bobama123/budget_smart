@@ -35,6 +35,27 @@ const Feed = ({ navigate }) => {
     // Update transactions list when a new transaction is added
     setTransactions([newTransaction, ...transactions]);
   };
+
+  const handleDeleteTransaction = async (transactionId) => {
+    try {
+      const response = await fetch(`/transactions/${transactionId}`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setTransactions(prevTransactions => prevTransactions.filter(t => t._id !== transactionId));
+        console.log("Deleted transaction:", transactionId);
+      } else {
+        console.error("Failed to delete transaction");
+      }
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+    }
+  };
   
     if(token) {
       return(
@@ -46,7 +67,7 @@ const Feed = ({ navigate }) => {
             <TransactionForm navigate={navigate} onNewTransaction={handleNewTransaction} />
           <div id='feed' role="feed">
               {transactions.map(
-                (transaction) => ( <Transaction transaction={ transaction } key={ transaction._id } /> )
+                (transaction) => ( <Transaction transaction={ transaction } key={ transaction._id } onDelete={handleDeleteTransaction} /> )
               )}
           </div>
         </>
@@ -57,22 +78,3 @@ const Feed = ({ navigate }) => {
 }
 
 export default Feed;
-
-
-// import React from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import TransactionForm from '../transaction/Transaction';
-
-
-// const Feed = () => {
-//   const navigate = useNavigate();
-
-//   return (
-//     <div>
-//       <h1>Welcome to Budget Smartly</h1>
-//       <TransactionForm navigate={navigate} />
-//     </div>
-//   );
-// };
-
-// export default Feed;
