@@ -63,10 +63,42 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
+
+
+const updateTransaction = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user_id; // Ensure only the owner can edit
+    const updateData = req.body;
+
+    console.log("Attempting to update transaction with ID:", id);
+
+    // Find the transaction & ensure it belongs to the logged-in user
+    const transaction = await Transaction.findOne({ _id: id, user: userId });
+
+    if (!transaction) {
+      return res.status(404).json({ message: "Transaction not found or unauthorized" });
+    }
+
+    // Update the transaction
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true, runValidators: true } // Return updated transaction and validate fields
+    );
+
+    res.status(200).json({ message: "Transaction updated successfully", updatedTransaction });
+  } catch (err) {
+    console.error("Error updating transaction:", err);
+    res.status(500).json({ error: "Failed to update transaction", details: err.message });
+  }
+};
+
 const TransactionsController = {
   getUserTransactions: getUserTransactions,
   createTransaction: createTransaction,
-  deleteTransaction: deleteTransaction
+  deleteTransaction: deleteTransaction,
+  updateTransaction: updateTransaction
 }
 
 module.exports = TransactionsController;
